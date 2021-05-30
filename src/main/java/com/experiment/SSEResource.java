@@ -27,6 +27,7 @@ public class SSEResource {
         this.vertx = vertx;
     }
 
+    // Demonstration of SSE randomly generated data
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @Path("/stream/{name}")
@@ -58,6 +59,7 @@ public class SSEResource {
         return "publishing message " + time + " " + UUID.randomUUID().toString();
     }
 
+    // Demonstration of SSE using event bus
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @Path("/stream")
