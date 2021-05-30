@@ -1,16 +1,11 @@
 package com.experiment;
 
-import com.hazelcast.core.HazelcastInstance;
 import io.smallrye.mutiny.Multi;
-import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.mutiny.core.Vertx;
-
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,20 +38,20 @@ public class SSEResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/message/{message}")
-    public String message(@PathParam String message){
-        vertx.eventBus().publish(BUS_ADDRESS,message);
+    public String message(@PathParam String message) {
+        vertx.eventBus().publish(BUS_ADDRESS, message);
         return "message published successfully";
     }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/automated/message")
-    public Response message(){
+    public Response message() {
         var eb = vertx.eventBus();
         var time = LocalDateTime.now();
 
         vertx.setPeriodic(15000, v -> eb.publish(BUS_ADDRESS, generateRandomMessage(time)));
-        return Response.ok("initiated at "+time).build();
+        return Response.ok("initiated at " + time).build();
     }
 
     private String generateRandomMessage(LocalDateTime time) {
@@ -68,7 +63,7 @@ public class SSEResource {
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @Path("/stream")
     public Multi<String> streamEvents() {
-        return vertx.eventBus().consumer(BUS_ADDRESS).toMulti().map(item-> item.body().toString());
+        return vertx.eventBus().consumer(BUS_ADDRESS).toMulti().map(item -> item.body().toString());
     }
 
 }
