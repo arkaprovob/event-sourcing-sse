@@ -1,10 +1,13 @@
 package com.experiment;
 
+import com.hazelcast.core.HazelcastInstance;
 import io.smallrye.mutiny.Multi;
+import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.mutiny.core.Vertx;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -22,6 +25,7 @@ public class SSEResource {
 
 
     private final Vertx vertx;
+
 
     public SSEResource(Vertx vertx) {
         this.vertx = vertx;
